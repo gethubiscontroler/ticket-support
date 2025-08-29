@@ -1,0 +1,54 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+            user-name-attribute: sub
+
+server:
+  port: 8080
+
+# JWT configuration
+jwt:
+  secret: A230NrnXwRdwuNZRhPtmwUtxoISN0LY6dUAI1qz3pI0pzJZFjFTeuoarIGMEZZik5iSZNQb3c29ogE9evMqv45L0
+  expirationMs: 86400000 # 24 hours
+
+# Application specific configuration
+app:
+  mail:
+    from: ${EMAIL_FROM:Merci de metre un boite mail d'envoie' }
+    support: ${EMAIL_SUPPORT:portail-support@gmail.com}
+  frontend:
+    url: http://localhost:5173
+
+# Logging configuration
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
